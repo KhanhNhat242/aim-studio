@@ -1,130 +1,118 @@
 import React from 'react'
 import Image from 'next/image'
-import { site } from '@/lib/site-config'
-import { ChatIcon, PhoneIcon } from '@/components/icons'
+import Link from 'next/link'
+import { services, site } from '@/lib/site-config'
+import { ArrowIcon, ChatIcon, PhoneIcon } from '@/components/icons'
 
 const delay = (ms: number) => ({ '--delay': `${ms}ms` }) as React.CSSProperties
+
+// Huy hiệu tròn chữ chạy vòng, logo "A" ở giữa
+// (id riêng vì huy hiệu render 2 lần: bản mobile và bản desktop)
+const RotatingBadge = ({ id, className = '' }: { id: string; className?: string }) => (
+    <div className={`h-24 w-24 xl:h-28 xl:w-28 ${className}`} aria-hidden>
+        <div className="relative h-full w-full">
+            <svg viewBox="0 0 100 100" className="h-full w-full animate-[spin_24s_linear_infinite] motion-reduce:animate-none">
+                <defs>
+                    <path id={id} d="M50,50 m-38,0 a38,38 0 1,1 76,0 a38,38 0 1,1 -76,0" />
+                </defs>
+                <text className="fill-ink text-[9px] font-medium uppercase tracking-[0.2em]">
+                    <textPath href={`#${id}`} textLength="236" lengthAdjust="spacing">
+                        · Hãy để AIM lưu giữ thanh xuân của bạn
+                    </textPath>
+                </text>
+            </svg>
+            <Image
+                src="/images/logo-mark-black.png"
+                alt=""
+                width={40}
+                height={40}
+                className="absolute left-1/2 top-1/2 h-7 w-7 -translate-x-1/2 -translate-y-1/2 xl:h-8 xl:w-8"
+            />
+        </div>
+    </div>
+)
+
+// Số liệu thật lấy từ REQUIREMENTS — không dùng số "đẹp" tự bịa
+const facts = [
+    { value: String(services.length).padStart(2, '0'), label: 'Dịch vụ chụp ảnh' },
+    { value: String(site.bookingPhones.length).padStart(2, '0'), label: 'Hotline booking' },
+    { value: site.address.split(' ')[0], label: site.address.split(' ').slice(1).join(' ') },
+]
 
 const HeroSection = () => {
     const hotline = site.bookingPhones[0]
 
     return (
-        <section
-            id="trang-chu"
-            className="anchor-offset relative bg-paper"
-        >
-            <div className="shell relative flex min-h-[calc(100svh-var(--header-h))] flex-col gap-8 pt-8 pb-6 lg:grid lg:h-[calc(100svh-var(--header-h))] lg:min-h-160 lg:max-h-240 lg:grid-cols-12 lg:items-center lg:gap-12 lg:py-10">
-                {/* Cột trái (5/12): thông điệp */}
-                <div className="relative z-10 lg:col-span-5">
-                    <p
-                        className="hero-rise flex items-center gap-3 text-[11px] font-medium uppercase tracking-[0.32em] text-mute"
-                        style={delay(100)}
-                    >
-                        <span className="h-px w-8 bg-mute" />
-                        {site.name} · {site.city}
-                    </p>
+        <section id="trang-chu" className="anchor-offset relative overflow-hidden bg-paper">
+            {/*
+              Mobile/tablet: các cột dùng `contents` để xếp lại theo order (chữ → ảnh → CTA).
+              Desktop: lưới 3 cột [chữ trái | người mẫu | chữ phải], cao đúng 1 màn hình.
+            */}
+            <div className="shell flex flex-col pt-8 lg:grid lg:h-(--hero-h) lg:grid-cols-[minmax(0,1fr)_var(--model-w)_minmax(0,1fr)] lg:pt-0 [--hero-h:clamp(40rem,calc(100svh-var(--header-h)),55rem)] [--model-w:calc(var(--hero-h)*0.88*2/3)]">
+                {/* ===== Cột trái ===== */}
+                <div className="contents lg:relative lg:z-0 lg:flex lg:flex-col lg:py-10 xl:py-12">
 
-                    <h1
-                        className="hero-rise mt-6 font-display text-[2.3rem] leading-[1.1] text-ink sm:text-6xl lg:text-[3.75rem] lg:leading-[1.04] xl:text-[4.5rem]"
-                        style={delay(200)}
-                    >
-                        {/* Mobile/tablet: 2 dòng cân; desktop: bậc thang 4 dòng kiểu tạp chí */}
-                        <span className="lg:block">Hãy để AIM</span>{' '}
-                        <span className="lg:block">lưu giữ</span>
-                        <br className="lg:hidden" />
-                        <em className="font-normal italic text-graphite lg:block lg:pl-[1.2em]">thanh xuân</em>{' '}
-                        <span className="lg:block">của bạn</span>
+                    <h1 className="order-2 lg:order-none mt-5 font-display leading-[0.98] text-[clamp(2.75rem,5.4vw,5rem)] lg:mt-6 lg:whitespace-nowrap">
+                        <span className="hero-rise block text-ink" style={delay(200)}>Hãy để AIM</span>
+                        <span className="hero-rise block text-mute" style={delay(300)}>lưu giữ</span>
+                        {/* Nửa sau slogan hiển thị ở cột phải (aria-hidden) — giữ ở đây để trình đọc màn hình đọc liền mạch */}
+                        <span className="sr-only"> thanh xuân của bạn</span>
                     </h1>
 
-                    <p
-                        className="hero-rise mt-6 max-w-md text-[15px] leading-relaxed text-mute sm:text-base lg:mt-8"
-                        style={delay(350)}
-                    >
-                        Nơi ghi dấu những khoảnh khắc tự nhiên, trong trẻo và giàu cảm xúc nhất trong từng cột mốc đáng nhớ của bạn.
-                    </p>
-
-                    <div className="hero-rise mt-8 flex gap-3 lg:mt-10" style={delay(500)}>
-                        <a
-                            href={`tel:${hotline.tel}`}
-                            className="inline-flex flex-1 items-center justify-center gap-2.5 border border-ink bg-ink px-4 py-3.5 sm:flex-none sm:px-6 text-[12px] font-medium uppercase tracking-[0.18em] text-paper transition-colors duration-300 hover:bg-paper hover:text-ink"
+                    <div className="order-5 mt-8 lg:order-none lg:mt-auto">
+                        <p
+                            className="hero-rise max-w-sm text-[15px] leading-relaxed text-graphite xl:text-base"
+                            style={delay(450)}
                         >
-                            <PhoneIcon width={15} height={15} />
-                            Gọi đặt lịch
-                        </a>
-                        <a
-                            href={site.zalo.url}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="inline-flex flex-1 items-center justify-center gap-2.5 border border-ink bg-paper px-4 py-3.5 sm:flex-none sm:px-6 text-[12px] font-medium uppercase tracking-[0.18em] text-ink transition-colors duration-300 hover:bg-ink hover:text-paper"
-                        >
-                            <ChatIcon width={15} height={15} />
-                            Chat Zalo
-                        </a>
+                            Nơi ghi dấu những khoảnh khắc tự nhiên, trong trẻo và giàu cảm xúc nhất trong từng cột mốc đáng nhớ của bạn.
+                        </p>
                     </div>
                 </div>
 
-                {/* Cột phải (7/12): bộ 3 ảnh lệch tầng */}
-                <div className="relative min-h-80 flex-1 lg:col-span-7 lg:h-full lg:min-h-0">
-                    {/* Khung viền mảnh lệch sau ảnh chính — chất tạp chí */}
-                    <div
-                        className="hero-rise absolute left-[24%] top-[9%] h-[84%] w-[50%] border border-ink/15"
-                        style={delay(900)}
-                        aria-hidden
-                    />
-
-                    {/* Ảnh chính: Beauty cận mặt */}
-                    <figure
-                        className="hero-unveil absolute left-[20%] top-[4%] h-[84%] w-[50%] overflow-hidden bg-smoke"
+                {/* ===== Giữa: người mẫu + logo "A" chìm phía sau ===== */}
+                <div className="relative order-4 mx-auto mt-8 h-[62svh] max-h-[34rem] min-h-88 aspect-2/3 lg:z-10 lg:order-none lg:mx-0 lg:mt-0 lg:h-[88%] lg:max-h-none lg:min-h-0 lg:w-full lg:self-end">
+                    {/* hero-rise kết thúc ở opacity 1 nên độ mờ phải đặt ở lớp trong */}
+                    <div className="hero-rise absolute inset-0" style={delay(150)} aria-hidden>
+                        <Image
+                            src="/images/logo-mark-black.png"
+                            alt=""
+                            width={512}
+                            height={512}
+                            className="absolute bottom-[4%] left-1/2 w-[135%] max-w-none -translate-x-1/2 opacity-[0.06]"
+                        />
+                    </div>
+                    <Image
+                        src="/images/hero-img.png"
+                        alt="Người mẫu váy đen dạ tiệc trong bộ ảnh Party at AIM Studio"
+                        fill
+                        preload
+                        sizes="(min-width: 1024px) 34vw, 62vw"
+                        className="hero-rise object-contain object-bottom [mask-image:linear-gradient(to_left,transparent,black_9%)]"
                         style={delay(250)}
-                    >
-                        <Image
-                            src="/images/portfolio/beauty-01.jpg"
-                            alt="Ảnh Beauty cận mặt tại AIM Studio, cô gái tóc xoăn đặt tay bên má"
-                            fill
-                            preload
-                            sizes="(min-width: 1024px) 30vw, 50vw"
-                            className="object-cover object-[50%_20%]"
-                        />
-                    </figure>
-
-                    {/* Ảnh phụ trái, thấp hơn: concept hoa sen cầm ô */}
-                    <figure
-                        className="hero-unveil absolute bottom-0 left-0 z-10 h-[50%] w-[32%] overflow-hidden bg-smoke ring-6 ring-paper lg:ring-8"
-                        style={delay(550)}
-                    >
-                        <Image
-                            src="/images/portfolio/concept-lotus-01.jpg"
-                            alt="Ảnh concept nàng thơ cầm ô giấy bên hoa sen"
-                            fill
-                            sizes="(min-width: 1024px) 20vw, 32vw"
-                            className="object-cover object-[50%_25%]"
-                        />
-                    </figure>
-
-                    {/* Ảnh phụ phải, cao hơn: concept váy đen dạ tiệc */}
-                    <figure
-                        className="hero-unveil absolute right-0 top-0 z-10 h-[48%] w-[30%] overflow-hidden bg-smoke ring-6 ring-paper lg:ring-8"
-                        style={delay(700)}
-                    >
-                        <Image
-                            src="/images/portfolio/concept-party-01.jpg"
-                            alt="Ảnh concept dạ tiệc váy đen sang trọng"
-                            fill
-                            sizes="(min-width: 1024px) 20vw, 30vw"
-                            className="object-cover object-[50%_20%]"
-                        />
-                    </figure>
-
+                    />
+                    <RotatingBadge id="hero-badge-mobile" className="absolute -right-2 top-[4%] lg:hidden" />
                 </div>
 
-                {/* Gợi ý cuộn xuống, nằm dưới cột chữ để không đè ảnh */}
-                <a
-                    href="#gioi-thieu"
-                    aria-label="Cuộn xuống phần giới thiệu"
-                    className="absolute bottom-8 left-8 hidden h-14 w-px overflow-hidden bg-line lg:block"
-                >
-                    <span className="scroll-cue block h-full w-full bg-ink" />
-                </a>
+                {/* ===== Cột phải ===== */}
+                <div className="contents lg:relative lg:z-0 lg:flex lg:flex-col lg:items-end lg:py-10 lg:text-right xl:py-12">
+                    <div className="hero-rise hidden lg:block" style={delay(700)}>
+                        <RotatingBadge id="hero-badge-desktop" />
+                    </div>
+
+                    <p
+                        aria-hidden
+                        className="order-3 font-display leading-[0.98] text-[clamp(2.75rem,5.4vw,5rem)] text-right lg:order-none lg:mt-4 lg:whitespace-nowrap"
+                    >
+                        <em className="hero-rise block font-normal italic text-mute" style={delay(350)}>thanh xuân</em>
+                        <span className="hero-rise block text-ink" style={delay(450)}>của bạn</span>
+                    </p>
+
+                    <p
+                        className="hero-rise mt-6 hidden max-w-60 font-display text-[15px] italic leading-relaxed text-mute lg:block"
+                        style={delay(600)}
+                    >
+                    </p>
+                </div>
             </div>
         </section>
     )

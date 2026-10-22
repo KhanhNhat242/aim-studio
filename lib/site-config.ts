@@ -59,15 +59,15 @@ export const services: Service[] = [
     slug: 'beauty',
     name: 'Beauty',
     description:
-      'Tôn vinh đường nét gương mặt thanh tú và thần thái rạng rỡ của riêng bạn trong từng khung hình cận cảnh.',
-    cover: { src: '/images/portfolio/beauty-02.jpg', alt: 'Ảnh Beauty cận mặt, cô gái chống cằm trên nền xám sáng' },
-    hover: { src: '/images/portfolio/beauty-03.jpg', alt: 'Ảnh Beauty cô gái nghiêng vai trên nền xám sáng' },
+      'Vẻ đẹp dịu dàng, thanh tao trong tà lụa xanh, ô giấy và sen trắng — nét nữ tính đậm chất cổ điển.',
+    cover: { src: '/images/portfolio/concept-lotus-01.jpg', alt: 'Cô gái áo lụa xanh cầm ô giấy trắng bên bình sen' },
+    hover: { src: '/images/portfolio/concept-lotus-03.jpg', alt: 'Cô gái áo lụa xanh ngồi dưới ô giấy bên hoa sen trắng' },
   },
   {
     slug: 'concept',
     name: 'Concept',
     description:
-      'Thỏa sức hóa thân vào những bối cảnh nghệ thuật độc đáo, mang đậm dấu ấn và cá tính tuổi trẻ.',
+      'Từ nàng thơ bên sen hồng, cánh bướm vàng đến khung cảnh lông vũ mơ màng — mỗi concept là một câu chuyện riêng.',
     cover: { src: '/images/portfolio/concept-lotus-02.jpg', alt: 'Ảnh concept nàng thơ bên hoa sen và cánh bướm' },
     hover: { src: '/images/portfolio/concept-feather-02.jpg', alt: 'Ảnh concept mơ màng giữa lông vũ tông vàng' },
   },
@@ -75,32 +75,16 @@ export const services: Service[] = [
     slug: 'profile',
     name: 'Profile',
     description:
-      'Xây dựng hình ảnh cá nhân chỉn chu, tự tin và chuyên nghiệp cho công việc cũng như sự nghiệp.',
-    // TODO: lấy ảnh Profile thật từ thư mục Drive tư liệu
-    cover: null,
+      'Chân dung cận cảnh trên nền xám tối giản, ánh sáng mềm tôn làn da và thần thái tự nhiên của bạn.',
+    cover: { src: '/images/portfolio/beauty-02.jpg', alt: 'Ảnh chân dung cô gái tóc xoăn chống cằm trên nền xám sáng' },
+    hover: { src: '/images/portfolio/beauty-03.jpg', alt: 'Ảnh chân dung cô gái tóc xoăn nghiêng vai trên nền xám sáng' },
   },
   {
     slug: 'ngoai-canh',
     name: 'Ngoại cảnh',
     description:
-      'Bắt trọn những khoảnh khắc tự do, phóng khoáng và tràn đầy sức sống giữa không gian thiên nhiên tươi đẹp.',
+      'Váy lụa bên sóng biển và bãi cát lúc chiều buông — những khung hình phóng khoáng, tràn đầy cảm xúc.',
     cover: { src: '/images/portfolio/outdoor-01.jpg', alt: 'Ảnh ngoại cảnh cô gái váy lụa bên bờ biển' },
     hover: { src: '/images/portfolio/outdoor-02.jpg', alt: 'Ảnh ngoại cảnh cô gái đứng trên bãi cát' },
-  },
-  {
-    slug: 'gia-dinh',
-    name: 'Gia đình',
-    description:
-      'Gói trọn những giây phút sum vầy ấm áp và tình cảm gắn kết yêu thương giữa các thành viên.',
-    // TODO: lấy ảnh Gia đình thật từ thư mục Drive tư liệu
-    cover: null,
-  },
-  {
-    slug: 'chup-bau',
-    name: 'Chụp bầu',
-    description:
-      'Lưu giữ hành trình làm mẹ thiêng liêng với những đường nét dịu dàng, đằm thắm và ngập tràn hạnh phúc.',
-    // TODO: lấy ảnh Chụp bầu thật từ thư mục Drive tư liệu
-    cover: null,
   },
 ]

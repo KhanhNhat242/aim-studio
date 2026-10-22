@@ -47,22 +47,11 @@ const ServiceCard = ({ service, index }: { service: Service; index: number }) =>
                 ) : (
                     <ImagePlaceholder name={service.name} />
                 )}
-                <span className="absolute left-4 top-4 bg-paper px-2.5 py-1 font-display text-xs italic text-ink">
-                    0{index + 1}
-                </span>
             </div>
 
             <div className="flex flex-1 flex-col pt-6">
                 <h3 className="font-display text-2xl text-ink lg:text-[1.75rem]">{service.name}</h3>
                 <p className="mt-3 flex-1 text-[15px] leading-relaxed text-mute">{service.description}</p>
-                <a
-                    href={`tel:${hotline.tel}`}
-                    aria-label={`${site.priceNote} dịch vụ ${service.name} — gọi ${hotline.display}`}
-                    className="mt-6 inline-flex items-center justify-between gap-3 border border-ink bg-paper px-5 py-3 text-[12px] font-medium uppercase tracking-[0.16em] text-ink transition-colors duration-500 group-hover:bg-ink group-hover:text-paper"
-                >
-                    {site.priceNote}
-                    <ArrowIcon width={16} height={16} className="transition-transform duration-500 group-hover:translate-x-1" />
-                </a>
             </div>
         </article>
     )
@@ -73,18 +62,7 @@ const ServicesSection = () => {
         <section id="dich-vu" className="anchor-offset section-y bg-paper">
             <div className="shell">
                 <div className="mb-12 flex flex-col gap-6 lg:mb-16 lg:flex-row lg:items-end lg:justify-between">
-                    <SectionHeading eyebrow="Dịch vụ" title="Dịch vụ chụp ảnh tại AIM" />
-                    <p data-reveal="up" className="text-[15px] text-mute lg:pb-2 lg:text-right">
-                        Hotline booking:{' '}
-                        {site.bookingPhones.map((phone, i) => (
-                            <React.Fragment key={phone.tel}>
-                                {i > 0 && ' & '}
-                                <a href={`tel:${phone.tel}`} className="font-medium text-ink underline-offset-4 hover:underline">
-                                    {phone.display}
-                                </a>
-                            </React.Fragment>
-                        ))}
-                    </p>
+                    <SectionHeading eyebrow="" title="Dịch vụ chụp ảnh tại AIM" />
                 </div>
 
                 {/* Lưới 3 × 2, cột giữa thấp hơn tạo nhịp lệch tầng */}

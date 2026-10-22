@@ -11,7 +11,7 @@ const textLink =
 
 const ContactSection = () => {
     return (
-        <section id="lien-he" className="anchor-offset section-y bg-ink text-paper">
+        <section id="lien-he" className="anchor-offset section-y bg-ink text-paper selection:bg-paper selection:text-ink">
             <div className="shell grid grid-cols-1 gap-12 lg:grid-cols-12 lg:gap-16">
                 {/* Cột trái: thông tin liên hệ */}
                 <div className="lg:col-span-5">
@@ -91,7 +91,7 @@ const ContactSection = () => {
                             title={`Bản đồ ${site.name} — ${site.address}`}
                             loading="lazy"
                             referrerPolicy="no-referrer-when-downgrade"
-                            className="absolute inset-0 h-full w-full grayscale contrast-[1.05]"
+                            className="absolute inset-0 h-full w-full"
                         />
                     </div>
                 </div>

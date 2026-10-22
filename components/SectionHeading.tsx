@@ -42,7 +42,7 @@ const SectionHeading = ({
                 <p
                     data-reveal="up"
                     style={{ '--reveal-delay': '200ms' } as React.CSSProperties}
-                    className={`mt-5 text-[15px] leading-relaxed sm:text-base ${isDark ? 'text-silver' : 'text-mute'}`}
+                    className={`mt-5 text-[15px] leading-relaxed text-pretty sm:text-base ${isDark ? 'text-silver' : 'text-mute'}`}
                 >
                     {description}
                 </p>

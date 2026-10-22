@@ -49,9 +49,12 @@ body {
   }
 }
 
-::selection {
-  background: var(--color-ink);
-  color: var(--color-paper);
+/* Màu bôi đen mặc định cho nền sáng; section nền đen tự đảo bằng selection:bg-paper selection:text-ink */
+@layer base {
+  ::selection {
+    background: var(--color-ink);
+    color: var(--color-paper);
+  }
 }
 
 /* Khung chứa nội dung dùng chung cho mọi section */
@@ -86,6 +89,27 @@ body {
 /* Neo menu không bị header sticky che mất */
 @utility anchor-offset {
   scroll-margin-top: var(--header-h);
+}
+
+/* Bento điểm mạnh: thẻ lớn 3/5, thẻ nhỏ 2/5 hàng; rê vào thẻ nhỏ thì hai thẻ đổi bề rộng */
+@media (width >=48rem) {
+  .usp-row>.usp-card {
+    flex: 2 1 0%;
+    min-width: 0;
+    transition: flex-grow 0.7s cubic-bezier(0.22, 1, 0.36, 1), opacity 1s ease, transform 1s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .usp-row>.usp-card[data-size='large'] {
+    flex-grow: 3;
+  }
+
+  .usp-row:has(> .usp-card[data-size='small']:hover)>.usp-card[data-size='large'] {
+    flex-grow: 2;
+  }
+
+  .usp-row>.usp-card[data-size='small']:hover {
+    flex-grow: 3;
+  }
 }
 
 /* Hero: hiện ngay khi tải trang, không chờ JS */

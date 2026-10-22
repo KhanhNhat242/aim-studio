@@ -79,6 +79,13 @@ Ghi chú:
 - **Thông điệp thương hiệu giàu cảm xúc** → copy ấm áp, gần gũi, nói về kỷ niệm/thanh xuân; tránh văn quảng cáo khô cứng hay khoa trương ("số 1", "rẻ nhất"...).
 - **Slogan chính thức (giữ nguyên văn):** _"Hãy để AIM lưu giữ thanh xuân của bạn"_
 
+**Mô tả bổ sung do khách cung cấp (22/10/2026)** — dùng cho section Giới thiệu:
+- "Không chỉ là một buổi chụp ảnh, đây là cách bạn lưu giữ phiên bản xinh đẹp nhất của chính mình."
+- "Tại AIM STUDIO, mỗi concept đều mang một màu sắc riêng — từ nàng thơ ngọt ngào, beauty trong trẻo, phong cách quyến rũ đầy thần thái đến những bộ ảnh cá tính, sang trọng và nghệ thuật."
+- Điểm mạnh: Đa dạng concept, phù hợp nhiều phong cách · Hỗ trợ tạo dáng tận tình, kể cả khi bạn chưa biết cách pose · Chú trọng ánh sáng, góc chụp và màu ảnh chỉn chu · Không gian chụp ảnh được đầu tư để bạn tự tin tỏa sáng.
+- "Bạn muốn lưu giữ nét thanh xuân hay thử một hình ảnh hoàn toàn mới, AIM STUDIO luôn có concept dành cho bạn."
+- "Đừng bỏ lỡ cơ hội sở hữu những bộ ảnh thật xinh với **ưu đãi đặc biệt** từ AIM Studio!" → **chưa dùng**: chưa có nội dung ưu đãi cụ thể (xem mục 12).
+
 ## 7. Nhận diện & phong cách
 
 - **Màu chủ đạo:** trắng, xám, đen. Không dùng màu nhấn khác (không teal, xanh, be/kem, vàng...).
@@ -140,6 +147,8 @@ Còn lại:
 |---|---|---|
 | 22/10/2026 | Dev | Tạo tài liệu từ PHIẾU DEV 34. |
 | 22/10/2026 | Dev | Làm landing page theo brief Editorial Magazine; thêm `docs/DESIGN.md`. Ngoại cảnh dùng ảnh thật (brief ghi placeholder nhưng kho ảnh đã có ảnh ngoại cảnh). Menu tạm trỏ anchor trên trang chủ. |
+| 22/10/2026 | Dev | Section Giới thiệu dùng mô tả mới của khách: 4 điểm mạnh (thay 3 điểm cũ) + câu kết. Chưa dùng câu "ưu đãi đặc biệt". |
+| 22/10/2026 | Dev | Lookbook: 30 ảnh ngẫu nhiên từ `library/` (đã loại ảnh bikini, ảnh nhỏ, file trùng), hiện 11 ảnh + ô "Xem thêm" mở popup. |
 
 ## 12. Câu hỏi mở (chờ sale/khách)
 
@@ -150,3 +159,4 @@ Còn lại:
 5. Có muốn form đặt lịch không? Nếu có, dữ liệu gửi về đâu (Zalo/email/Google Sheet)?
 6. Có dịch vụ Photobooth riêng để liệt kê không?
 7. Xin ảnh thật cho Profile, Gia đình, Chụp bầu (kho ảnh hiện chưa có).
+8. "Ưu đãi đặc biệt" cụ thể là gì (mức giảm, thời hạn, điều kiện)? Có thì mới đưa lên web.

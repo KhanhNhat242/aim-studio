@@ -17,6 +17,7 @@
 
 - Dùng class `bg-paper`, `text-ink`, `border-paper/10`… **Không** dùng `text-[#…]` hay bảng màu Tailwind khác.
 - Không có dark mode. Bản đồ nhúng được lọc `grayscale`.
+- Màu bôi đen (selection) mặc định: nền `ink`, chữ `paper`. Mọi khối **nền đen** phải thêm `selection:bg-paper selection:text-ink` để chữ bôi đen không lẫn vào nền.
 
 ## 2. Chữ
 
@@ -43,11 +44,16 @@ Section mới phải giữ nhịp xen kẽ, không đặt 2 section cùng nền 
 ## 5. Thành phần
 
 - **Header**: sticky, `bg-paper/85` + blur, logo chữ "A" + wordmark AIM/STUDIO, 4 mục menu, nút "Đặt lịch ngay" (gọi hotline). Viền dưới chỉ hiện khi đã cuộn.
-- **Hero**: cao đúng 1 màn hình (`100svh - header`), lưới 5:7. Trái: eyebrow, slogan nguyên văn, mô tả, 2 CTA (Gọi đặt lịch / Chat Zalo). Phải: 3 ảnh lệch tầng chồng nhau (ảnh chính Beauty + concept sen + concept váy đen), khung viền mảnh lệch sau ảnh chính.
+- **Hero** (bố cục "người mẫu đứng giữa"): cao đúng 1 màn hình (`clamp(40rem, 100svh - header, 55rem)`), lưới 3 cột `[chữ trái | người mẫu | chữ phải]`.
+  - Slogan nguyên văn tách đôi, chữ serif cỡ lớn 2 tông: trái "Hãy để AIM" (ink) / "lưu giữ" (mute); phải "*thanh xuân*" (mute, nghiêng) / "của bạn" (ink). Người mẫu (`hero-img.png`, PNG tách nền) đè lên chữ, logo "A" mờ 6% phía sau thay cho vệt cọ.
+  - Trái dưới: mô tả + 2 CTA + hàng số liệu **thật** (số dịch vụ, số hotline, số nhà) — cấm số liệu bịa kiểu "120K+", "4.9★".
+  - Phải: huy hiệu tròn chữ chạy vòng, dòng 6 dịch vụ in nghiêng, thẻ bộ ảnh "Party at AIM Studio" dẫn tới Lookbook.
+  - Mobile: chữ → người mẫu → mô tả/CTA → số liệu (dùng `contents` + `order-*`, nhớ `lg:order-none`).
 - **Nút**: chính = nền `ink` chữ `paper`; phụ = nền `paper` viền `ink`. Hover đảo màu, `duration-300`. Không bo góc.
 - **Thẻ dịch vụ**: ảnh 3:4, số thứ tự `01–06`, hover phóng ảnh `scale-104` trong 500ms + đổi sang ảnh thứ 2 (nếu có) + nút "Liên hệ để nhận báo giá" chuyển nền đen.
 - **Placeholder ảnh**: nền `smoke`, khung viền trong, logo "A" mờ 8%, tên dịch vụ serif nghiêng, nhãn "Ảnh đang cập nhật". Kèm `TODO` trong `lib/site-config.ts`.
-- **Lookbook**: masonry `columns-2/3/4`, bấm mở popup xem ảnh lớn (Esc, ← →).
+- **Lookbook**: album cột so le (mỗi cột bắt đầu ở độ cao khác nhau, chân cột lệch). Desktop 4 cột `[2,3,3,2]` = 9 ảnh, mobile 2 cột = 7 ảnh, khung xen kẽ 3:4 / 4:5; ô cuối cột phải là "Xem thêm" (3:4, viền đứt nét, số "+N"); bấm ảnh hoặc ô "Xem thêm" mở popup xem toàn bộ (Esc, ← →). Dữ liệu ảnh ở `lib/lookbook-photos.ts`.
+- **Điểm mạnh (Giới thiệu)**: bento 2 hàng so le — hàng trên lớn–nhỏ, hàng dưới nhỏ–lớn (3/5 – 2/5), ảnh làm nền thẻ, lớp phủ `ink` từ dưới lên, chữ `paper`. Rê vào thẻ nhỏ thì hai thẻ đổi bề rộng (CSS `.usp-row` trong `globals.css`). Mobile xếp 1 cột.
 - **Hoạ tiết chìm**: logo "A" độ mờ 3–5% ở góc nền khối Giới thiệu.
 
 ## 6. Chuyển động
@@ -59,6 +65,7 @@ Section mới phải giữ nhịp xen kẽ, không đặt 2 section cùng nền 
 ## 7. Ảnh
 
 - Ảnh dùng trên web đặt ở `public/images/portfolio/`, tên `<dịch-vụ|concept>-<bộ>-NN.jpg` (vd. `concept-lotus-03.jpg`). Logo: `public/images/logo-mark-black.png`, `logo-mark-white.png` (nền trong suốt).
+- Lookbook: 30 ảnh bốc ngẫu nhiên một lần (seed cố định) từ `library/`, chép sang `portfolio/lookbook/lookbook-NN-<bộ>.jpg`. Không random lúc render (vỡ prerender tĩnh của `cacheComponents`).
 - `public/images/library/` là kho gốc khách gửi (tên file/thư mục chưa chuẩn) — chỉ để chọn ảnh, **không** tham chiếu trực tiếp trong code.
 - Ảnh luôn qua `next/image`, `alt` tiếng Việt mô tả đúng nội dung; ảnh đầu màn hình dùng `preload` (Next 16 đã bỏ `priority`).
 - Không dùng ảnh stock/ảnh AI làm ảnh "của studio". Chưa có ảnh thật → placeholder.

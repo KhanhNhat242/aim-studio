@@ -5,7 +5,7 @@ import { navItems, site } from '@/lib/site-config'
 
 const Footer = () => {
     return (
-        <footer className="bg-ink text-paper">
+        <footer className="bg-ink text-paper selection:bg-paper selection:text-ink">
             <div className="shell">
                 <div className="flex flex-col gap-10 border-t border-paper/10 pt-12 lg:flex-row lg:items-center lg:justify-between lg:pt-14">
                     <div className="flex items-center gap-4">
