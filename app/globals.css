@@ -1,0 +1,254 @@
+@layer theme, base, antd, components, utilities;
+
+@import "tailwindcss";
+
+/* Bộ màu nhận diện AIM: chỉ trắng – xám – đen. Component chỉ dùng các token này. */
+@theme inline {
+  --color-paper: #ffffff;
+  --color-smoke: #f4f4f5;
+  --color-line: #e4e4e7;
+  --color-silver: #a1a1aa;
+  --color-mute: #71717a;
+  --color-graphite: #3f3f46;
+  --color-ink: #09090b;
+
+  --font-sans: var(--font-be-vietnam), Arial, Helvetica, sans-serif;
+  --font-display: var(--font-playfair), Georgia, serif;
+}
+
+:root {
+  --header-h: 4rem;
+}
+
+@media (width >=64rem) {
+  :root {
+    --header-h: 4.5rem;
+  }
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--color-paper);
+  color: var(--color-ink);
+}
+
+/* Chặn tràn ngang (vd. phần tử data-reveal="left/right" đang dịch ra ngoài trước khi hiện)
+   – dùng clip thay vì hidden để không tạo vùng cuộn mới, không làm hỏng position: sticky */
+html,
+body {
+  overflow-x: clip;
+}
+
+/* Đặt trong layer base để class border-* của Tailwind vẫn ghi đè được */
+@layer base {
+  * {
+    border-color: var(--color-line);
+  }
+}
+
+::selection {
+  background: var(--color-ink);
+  color: var(--color-paper);
+}
+
+/* Khung chứa nội dung dùng chung cho mọi section */
+@utility shell {
+  width: 100%;
+  max-width: 80rem;
+  margin-inline: auto;
+  padding-inline: 1rem;
+
+  @media (width >=40rem) {
+    padding-inline: 1.5rem;
+  }
+
+  @media (width >=64rem) {
+    padding-inline: 2rem;
+  }
+}
+
+/* Nhịp dọc giữa các section: 64px mobile → 80px tablet → 112px desktop */
+@utility section-y {
+  padding-block: 4rem;
+
+  @media (width >=48rem) {
+    padding-block: 5rem;
+  }
+
+  @media (width >=64rem) {
+    padding-block: 7rem;
+  }
+}
+
+/* Neo menu không bị header sticky che mất */
+@utility anchor-offset {
+  scroll-margin-top: var(--header-h);
+}
+
+/* Hero: hiện ngay khi tải trang, không chờ JS */
+@keyframes hero-rise {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes hero-unveil {
+  from {
+    clip-path: inset(100% 0 0 0);
+  }
+
+  to {
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+.hero-rise {
+  opacity: 0;
+  animation: hero-rise 1s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  animation-delay: var(--delay, 0ms);
+}
+
+.hero-unveil {
+  clip-path: inset(100% 0 0 0);
+  animation: hero-unveil 1.4s cubic-bezier(0.77, 0, 0.18, 1) forwards;
+  animation-delay: var(--delay, 0ms);
+}
+
+/* Vạch cuộn xuống ở hero */
+@keyframes scroll-cue {
+  0% {
+    transform: scaleY(0);
+    transform-origin: top;
+  }
+
+  45% {
+    transform: scaleY(1);
+    transform-origin: top;
+  }
+
+  55% {
+    transform: scaleY(1);
+    transform-origin: bottom;
+  }
+
+  100% {
+    transform: scaleY(0);
+    transform-origin: bottom;
+  }
+}
+
+.scroll-cue {
+  animation: scroll-cue 2.4s cubic-bezier(0.65, 0, 0.35, 1) infinite;
+}
+
+/* animation */
+[data-reveal] {
+  opacity: 0;
+  transition:
+    opacity 1s ease,
+    transform 1s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+[data-reveal='left'] {
+  transform: translateX(-56px);
+}
+
+[data-reveal='right'] {
+  transform: translateX(56px);
+}
+
+[data-reveal='up'] {
+  transform: translateY(40px);
+}
+
+/* Mờ nét + nhích nhẹ lên: dịu hơn blur đứng yên */
+[data-reveal='blur'] {
+  transform: translateY(18px);
+  filter: blur(8px);
+  transition:
+    opacity 1s ease,
+    transform 1s cubic-bezier(0.22, 1, 0.36, 1),
+    filter 1s ease;
+}
+
+[data-reveal].is-revealed {
+  opacity: 1;
+  transform: none;
+  filter: none;
+  transition-delay: var(--reveal-delay, 0ms);
+}
+
+/* Ảnh trong card: phóng to rồi "lắng" về đúng cỡ khi card hiện */
+[data-reveal] .reveal-zoom {
+  transform: scale(1.18);
+  transition: transform 1.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+[data-reveal].is-revealed .reveal-zoom {
+  transform: scale(1);
+  transition-delay: var(--reveal-delay, 0ms);
+}
+
+/* Ảnh lớn trong popup bộ sưu tập hiện dần khi chuyển ảnh */
+@keyframes lightbox-fade {
+  from {
+    opacity: 0;
+    transform: scale(0.98);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.lightbox-fade {
+  animation: lightbox-fade 0.3s ease-out;
+}
+
+@media (scripting: none) {
+  [data-reveal] {
+    opacity: 1;
+    transform: none;
+    filter: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  [data-reveal],
+  .hero-rise {
+    opacity: 1;
+    transform: none;
+    filter: none;
+    transition: none;
+    animation: none;
+  }
+
+  .hero-unveil {
+    clip-path: none;
+    animation: none;
+  }
+
+  [data-reveal] .reveal-zoom {
+    transform: none;
+    transition: none;
+  }
+
+  .scroll-cue,
+  .lightbox-fade {
+    animation: none;
+  }
+}
