@@ -10,8 +10,9 @@ const delay = (ms: number) => ({ '--delay': `${ms}ms` }) as React.CSSProperties
 // (id riêng vì huy hiệu render 2 lần: bản mobile và bản desktop)
 const RotatingBadge = ({ id, className = '' }: { id: string; className?: string }) => (
     <div className={`h-24 w-24 xl:h-28 xl:w-28 ${className}`} aria-hidden>
-        <div className="relative h-full w-full">
-            <svg viewBox="0 0 100 100" className="h-full w-full animate-[spin_24s_linear_infinite] motion-reduce:animate-none">
+        <div className="group relative h-full w-full">
+            {/* Rê chuột vào huy hiệu thì dừng quay (giữ nguyên góc đang quay), rời chuột thì quay tiếp */}
+            <svg viewBox="0 0 100 100" className="h-full w-full animate-[spin_24s_linear_infinite] group-hover:[animation-play-state:paused] motion-reduce:animate-none">
                 <defs>
                     <path id={id} d="M50,50 m-38,0 a38,38 0 1,1 76,0 a38,38 0 1,1 -76,0" />
                 </defs>
