@@ -1,18 +1,23 @@
 import React from 'react'
 import { site } from '@/lib/site-config'
 import SectionHeading from '@/components/SectionHeading'
+import SideOrnaments from '@/components/SideOrnaments'
 import { ChatIcon, FacebookIcon, PhoneIcon, PinIcon } from '@/components/icons'
 
 const outlineButton =
     'inline-flex items-center gap-2.5 border border-paper/30 px-5 py-3.5 text-[12px] font-medium uppercase tracking-[0.16em] text-paper transition-colors duration-300 hover:border-paper hover:bg-paper hover:text-ink'
+
+// Độ trễ hiện nối tiếp cho từng khối
+const delay = (ms: number) => ({ '--reveal-delay': `${ms}ms` }) as React.CSSProperties
 
 const textLink =
     'group inline-flex items-center gap-2.5 text-[12px] font-medium uppercase tracking-[0.16em] text-silver transition-colors hover:text-paper'
 
 const ContactSection = () => {
     return (
-        <section id="lien-he" className="anchor-offset section-y bg-ink text-paper selection:bg-paper selection:text-ink">
-            <div className="shell grid grid-cols-1 gap-12 lg:grid-cols-12 lg:gap-16">
+        <section id="lien-he" className="anchor-offset section-y relative overflow-hidden bg-ink text-paper selection:bg-paper selection:text-ink">
+            <SideOrnaments variant="contact" tone="dark" />
+            <div className="shell relative grid grid-cols-1 gap-12 lg:grid-cols-12 lg:gap-16">
                 {/* Cột trái: thông tin liên hệ */}
                 <div className="lg:col-span-5">
                     <SectionHeading
@@ -21,15 +26,15 @@ const ContactSection = () => {
                         title="Cùng AIM viết tiếp câu chuyện thanh xuân của bạn."
                     />
 
-                    <dl data-reveal="up" className="mt-10 divide-y divide-paper/10 border-y border-paper/10 lg:mt-12">
-                        <div className="flex gap-4 py-5">
+                    <dl className="mt-10 divide-y divide-paper/10 border-y border-paper/10 lg:mt-12">
+                        <div data-reveal="up" className="flex gap-4 py-5">
                             <dt className="pt-0.5 text-silver">
                                 <PinIcon />
                                 <span className="sr-only">Địa chỉ</span>
                             </dt>
                             <dd className="text-[15px]">{site.address}</dd>
                         </div>
-                        <div className="flex gap-4 py-5">
+                        <div data-reveal="up" style={delay(120)} className="flex gap-4 py-5">
                             <dt className="pt-0.5 text-silver">
                                 <PhoneIcon />
                                 <span className="sr-only">Booking</span>
@@ -49,7 +54,7 @@ const ContactSection = () => {
                     </dl>
 
                     {/* Hàng 1: gọi trực tiếp 2 số booking */}
-                    <div data-reveal="up" className="mt-10 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:mt-12">
+                    <div data-reveal="up" style={delay(200)} className="mt-10 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:mt-12">
                         {site.bookingPhones.map((phone, i) => (
                             <a
                                 key={phone.tel}
@@ -67,7 +72,7 @@ const ContactSection = () => {
                     </div>
 
                     {/* Hàng 2: kênh liên hệ khác */}
-                    <ul data-reveal="up" className="mt-6 flex flex-wrap gap-x-8 gap-y-3">
+                    <ul data-reveal="up" style={delay(300)} className="mt-6 flex flex-wrap gap-x-8 gap-y-3">
                         {[
                             { href: site.zalo.url, label: `Zalo ${site.zalo.display}`, Icon: ChatIcon },
                             { href: site.facebook.url, label: 'Facebook', Icon: FacebookIcon },
@@ -83,8 +88,8 @@ const ContactSection = () => {
                     </ul>
                 </div>
 
-                {/* Cột phải: bản đồ, lọc xám để hợp bộ màu */}
-                <div data-reveal="up" className="lg:col-span-7">
+                {/* Cột phải: bản đồ, phóng nhẹ vào khi hiện */}
+                <div data-reveal="scale" style={delay(150)} className="lg:col-span-7">
                     <div className="relative aspect-4/3 h-full min-h-80 w-full overflow-hidden border border-paper/10 bg-graphite lg:aspect-auto">
                         <iframe
                             src={site.maps.embedUrl}

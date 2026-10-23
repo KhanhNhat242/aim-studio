@@ -6,24 +6,53 @@ import Link from 'next/link'
 import { navItems, site } from '@/lib/site-config'
 import { PhoneIcon } from '@/components/icons'
 
+// id section ứng với từng mục menu, lấy từ href "/#..."
+const sectionIds = navItems.map((item) => item.href.split('#')[1])
+
 const Header = () => {
     const [isOpen, setIsOpen] = useState(false)
     const [isScrolled, setIsScrolled] = useState(false)
+    const [activeId, setActiveId] = useState<string>(sectionIds[0])
     const hotline = site.bookingPhones[0]
 
-    // Khi đã cuộn khỏi đầu trang thì hiện đường kẻ mảnh dưới header
     useEffect(() => {
-        const onScroll = () => setIsScrolled(window.scrollY > 8)
-        onScroll()
+        let frame = 0
+        const update = () => {
+            frame = 0
+            // Khi đã cuộn khỏi đầu trang thì hiện đường kẻ mảnh dưới header
+            setIsScrolled(window.scrollY > 8)
+
+            // Mục active = section cuối cùng có đỉnh đã vượt qua mốc ~40% màn hình.
+            // Section không có trên menu (vd. Lookbook) giữ nguyên mục trước đó.
+            const marker = window.innerHeight * 0.4
+            let current = sectionIds[0]
+            for (const id of sectionIds) {
+                const el = document.getElementById(id)
+                if (el && el.getBoundingClientRect().top <= marker) current = id
+            }
+            // Chạm đáy trang thì luôn active mục cuối (section cuối thường không cuộn tới mốc)
+            const atBottom = window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 2
+            setActiveId(atBottom ? sectionIds[sectionIds.length - 1] : current)
+        }
+        const onScroll = () => {
+            if (!frame) frame = requestAnimationFrame(update)
+        }
+
+        update()
         window.addEventListener('scroll', onScroll, { passive: true })
-        return () => window.removeEventListener('scroll', onScroll)
+        window.addEventListener('resize', onScroll)
+        return () => {
+            cancelAnimationFrame(frame)
+            window.removeEventListener('scroll', onScroll)
+            window.removeEventListener('resize', onScroll)
+        }
     }, [])
 
     const closeMenu = () => setIsOpen(false)
 
     return (
         <header
-            className={`sticky top-0 z-50 w-full bg-paper/85 backdrop-blur-md transition-[border-color,box-shadow] duration-300 border-b ${isScrolled || isOpen ? 'border-line' : 'border-transparent'}`}
+            className={`header-drop sticky top-0 z-50 w-full bg-paper/85 backdrop-blur-md transition-[border-color,box-shadow] duration-300 border-b ${isScrolled || isOpen ? 'border-line' : 'border-transparent'}`}
         >
             <div className="shell flex h-(--header-h) items-center justify-between gap-6">
                 {/* Logo chữ "A" + wordmark */}
@@ -38,17 +67,23 @@ const Header = () => {
                 {/* Menu desktop */}
                 <nav aria-label="Điều hướng chính" className="hidden lg:block">
                     <ul className="flex items-center gap-10">
-                        {navItems.map((item) => (
-                            <li key={item.href}>
-                                <Link
-                                    href={item.href}
-                                    className="group relative py-1 text-[13px] font-medium uppercase tracking-[0.18em] text-graphite transition-colors hover:text-ink"
-                                >
-                                    {item.label}
-                                    <span className="absolute -bottom-0.5 left-0 h-px w-0 bg-ink transition-all duration-300 group-hover:w-full" />
-                                </Link>
-                            </li>
-                        ))}
+                        {navItems.map((item, i) => {
+                            const isActive = activeId === sectionIds[i]
+                            return (
+                                <li key={item.href}>
+                                    <Link
+                                        href={item.href}
+                                        aria-current={isActive ? 'location' : undefined}
+                                        className={`group relative py-1 text-[13px] font-medium uppercase tracking-[0.18em] transition-colors hover:text-ink ${isActive ? 'text-ink' : 'text-mute'}`}
+                                    >
+                                        {item.label}
+                                        <span
+                                            className={`absolute -bottom-0.5 left-0 h-px bg-ink transition-all duration-300 group-hover:w-full ${isActive ? 'w-full' : 'w-0'}`}
+                                        />
+                                    </Link>
+                                </li>
+                            )
+                        })}
                     </ul>
                 </nav>
 
@@ -89,17 +124,22 @@ const Header = () => {
             >
                 <nav aria-label="Điều hướng di động" className="overflow-hidden">
                     <ul className="shell flex flex-col py-4">
-                        {navItems.map((item) => (
-                            <li key={item.href} className="border-b border-line last:border-0">
-                                <Link
-                                    href={item.href}
-                                    onClick={closeMenu}
-                                    className="block py-4 font-display text-2xl text-ink"
-                                >
-                                    {item.label}
-                                </Link>
-                            </li>
-                        ))}
+                        {navItems.map((item, i) => {
+                            const isActive = activeId === sectionIds[i]
+                            return (
+                                <li key={item.href} className="border-b border-line last:border-0">
+                                    <Link
+                                        href={item.href}
+                                        onClick={closeMenu}
+                                        aria-current={isActive ? 'location' : undefined}
+                                        className={`flex items-center justify-between py-4 font-display text-2xl transition-colors ${isActive ? 'text-ink' : 'text-silver'}`}
+                                    >
+                                        {item.label}
+                                        {isActive && <span className="h-1.5 w-1.5 rounded-full bg-ink" aria-hidden />}
+                                    </Link>
+                                </li>
+                            )
+                        })}
                     </ul>
                 </nav>
             </div>

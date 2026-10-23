@@ -1,6 +1,7 @@
 import React from 'react'
 import Image from 'next/image'
 import SectionHeading from '@/components/SectionHeading'
+import SideOrnaments from '@/components/SideOrnaments'
 import { services } from '@/lib/site-config'
 
 // "Beauty, Concept, …, Gia đình và Chụp bầu" — lấy từ danh sách dịch vụ, không hardcode
@@ -47,6 +48,7 @@ const rows = [
 const StorySection = () => {
     return (
         <section id="gioi-thieu" className="anchor-offset section-y relative overflow-hidden bg-smoke">
+            <SideOrnaments variant="story" />
             {/* Logo chữ "A" làm hoạ tiết chìm ở góc nền */}
             <Image
                 src="/images/logo-mark-black.png"
@@ -61,7 +63,7 @@ const StorySection = () => {
                 <SectionHeading
                     align="center"
                     eyebrow="Về AIM Studio"
-                    title="Không chỉ là một buổi chụp ảnh."
+                    title="Không chỉ là một buổi chụp ảnh"
                     description={`Đây là cách bạn lưu giữ phiên bản xinh đẹp nhất của chính mình. AIM Studio đồng hành cùng bạn qua ${services.length} dịch vụ chụp ảnh: ${serviceList}.`}
                     className="mb-12 lg:mb-16"
                 />
@@ -77,7 +79,8 @@ const StorySection = () => {
                                     <li
                                         key={value.title}
                                         data-size={size}
-                                        data-reveal="up"
+                                        // Thẻ cột trái trượt vào từ trái, cột phải từ phải
+                                        data-reveal={c === 0 ? 'left' : 'right'}
                                         style={{ '--reveal-delay': `${(r * 2 + c) * 120}ms` } as React.CSSProperties}
                                         className="usp-card group relative h-80 overflow-hidden bg-ink md:h-96"
                                     >
@@ -95,7 +98,7 @@ const StorySection = () => {
                                         </div>
                                         <div className="absolute inset-0 bg-linear-to-t from-ink/90 via-ink/40 via-55% to-ink/5" />
 
-                                        <div className="absolute inset-x-0 bottom-0 p-7 text-paper md:p-8">
+                                        <div className="reveal-rise absolute inset-x-0 bottom-0 p-7 text-paper md:p-8">
                                             <h3 className="mt-3 font-display text-2xl whitespace-nowrap md:text-[1.7rem]">
                                                 {value.title}
                                             </h3>

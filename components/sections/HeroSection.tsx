@@ -15,9 +15,9 @@ const RotatingBadge = ({ id, className = '' }: { id: string; className?: string 
                 <defs>
                     <path id={id} d="M50,50 m-38,0 a38,38 0 1,1 76,0 a38,38 0 1,1 -76,0" />
                 </defs>
-                <text className="fill-ink text-[9px] font-medium uppercase tracking-[0.2em]">
+                <text className="fill-ink text-[7px] font-medium uppercase tracking-[0.2em]">
                     <textPath href={`#${id}`} textLength="236" lengthAdjust="spacing">
-                        · Hãy để AIM lưu giữ thanh xuân của bạn
+                        • Beauty • Concept • Profile • Ngoại cảnh • Gia đình • Chụp bầu
                     </textPath>
                 </text>
             </svg>
@@ -43,7 +43,8 @@ const HeroSection = () => {
     const hotline = site.bookingPhones[0]
 
     return (
-        <section id="trang-chu" className="anchor-offset relative overflow-hidden bg-paper">
+        // hero-play: bật keyframe của Hero; RevealOnScroll gỡ/gắn lại để chạy lại khi cuộn quay về
+        <section id="trang-chu" data-replay="hero-play" className="hero-play anchor-offset relative overflow-hidden bg-paper">
             {/*
               Mobile/tablet: các cột dùng `contents` để xếp lại theo order (chữ → ảnh → CTA).
               Desktop: lưới 3 cột [chữ trái | người mẫu | chữ phải], cao đúng 1 màn hình.

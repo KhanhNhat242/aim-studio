@@ -112,6 +112,23 @@ body {
   }
 }
 
+/* Hoạ tiết vẽ tay ở hai mép section: trôi lên xuống rất nhẹ */
+@keyframes doodle-float {
+
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+.doodle-float {
+  animation: doodle-float 9s ease-in-out infinite;
+}
+
 /* Hero: hiện ngay khi tải trang, không chờ JS */
 @keyframes hero-rise {
   from {
@@ -135,14 +152,21 @@ body {
   }
 }
 
+/* Keyframe chỉ chạy khi khối cha có .hero-play (có sẵn từ server; RevealOnScroll gỡ/gắn lại để chạy lại) */
 .hero-rise {
   opacity: 0;
+}
+
+.hero-play .hero-rise {
   animation: hero-rise 1s cubic-bezier(0.22, 1, 0.36, 1) forwards;
   animation-delay: var(--delay, 0ms);
 }
 
 .hero-unveil {
   clip-path: inset(100% 0 0 0);
+}
+
+.hero-play .hero-unveil {
   animation: hero-unveil 1.4s cubic-bezier(0.77, 0, 0.18, 1) forwards;
   animation-delay: var(--delay, 0ms);
 }
@@ -204,11 +228,89 @@ body {
     filter 1s ease;
 }
 
+/* Phóng nhẹ từ 96% — cho khối lớn đứng yên như bản đồ */
+[data-reveal='scale'] {
+  transform: scale(0.96);
+}
+
 [data-reveal].is-revealed {
   opacity: 1;
   transform: none;
   filter: none;
   transition-delay: var(--reveal-delay, 0ms);
+}
+
+/* Ra khỏi màn hình thì đặt lại tức thì (không thấy được), để lần cuộn tới sau hiệu ứng chạy lại trọn vẹn */
+[data-reveal]:not(.is-revealed),
+[data-reveal]:not(.is-revealed) .reveal-zoom,
+[data-reveal]:not(.is-revealed) .reveal-line,
+[data-reveal]:not(.is-revealed) .reveal-rise,
+[data-reveal]:not(.is-revealed) .reveal-pin {
+  transition-duration: 0s;
+  transition-delay: 0s;
+}
+
+/* Các phần tử con hiện nối tiếp sau khối cha một nhịp (cộng thêm --reveal-delay của cha) */
+[data-reveal] .reveal-line {
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+[data-reveal].is-revealed .reveal-line {
+  transform: scaleX(1);
+  transition-delay: calc(var(--reveal-delay, 0ms) + 250ms);
+}
+
+/* Gạch bên phải nhãn căn giữa: vẽ từ trong ra ngoài */
+[data-reveal] .reveal-line-end {
+  transform-origin: right center;
+}
+
+[data-reveal] .reveal-rise {
+  opacity: 0;
+  transform: translateY(16px);
+  transition:
+    opacity 0.8s ease,
+    transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+[data-reveal].is-revealed .reveal-rise {
+  opacity: 1;
+  transform: none;
+  transition-delay: calc(var(--reveal-delay, 0ms) + 350ms);
+}
+
+/* Ghim thả xuống thẻ sau khi thẻ đã hiện */
+[data-reveal] .reveal-pin {
+  opacity: 0;
+  transform: translateY(-14px) scale(1.15);
+  transition:
+    opacity 0.4s ease,
+    transform 0.55s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+[data-reveal].is-revealed .reveal-pin {
+  opacity: 1;
+  transform: none;
+  transition-delay: calc(var(--reveal-delay, 0ms) + 550ms);
+}
+
+/* Header trượt xuống khi tải trang */
+@keyframes header-drop {
+  from {
+    opacity: 0;
+    transform: translateY(-100%);
+  }
+
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.header-drop {
+  animation: header-drop 0.8s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
 /* Ảnh trong card: phóng to rồi "lắng" về đúng cỡ khi card hiện */
@@ -240,7 +342,11 @@ body {
 }
 
 @media (scripting: none) {
-  [data-reveal] {
+
+  [data-reveal],
+  [data-reveal] .reveal-line,
+  [data-reveal] .reveal-rise,
+  [data-reveal] .reveal-pin {
     opacity: 1;
     transform: none;
     filter: none;
@@ -253,7 +359,8 @@ body {
   }
 
   [data-reveal],
-  .hero-rise {
+  .hero-rise,
+  .hero-play .hero-rise {
     opacity: 1;
     transform: none;
     filter: none;
@@ -261,17 +368,24 @@ body {
     animation: none;
   }
 
-  .hero-unveil {
+  .hero-unveil,
+  .hero-play .hero-unveil {
     clip-path: none;
     animation: none;
   }
 
-  [data-reveal] .reveal-zoom {
+  [data-reveal] .reveal-zoom,
+  [data-reveal] .reveal-line,
+  [data-reveal] .reveal-rise,
+  [data-reveal] .reveal-pin {
+    opacity: 1;
     transform: none;
     transition: none;
   }
 
+  .header-drop,
   .scroll-cue,
+  .doodle-float,
   .lightbox-fade {
     animation: none;
   }

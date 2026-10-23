@@ -50,16 +50,21 @@ Section mới phải giữ nhịp xen kẽ, không đặt 2 section cùng nền 
   - Phải: huy hiệu tròn chữ chạy vòng, dòng 6 dịch vụ in nghiêng, thẻ bộ ảnh "Party at AIM Studio" dẫn tới Lookbook.
   - Mobile: chữ → người mẫu → mô tả/CTA → số liệu (dùng `contents` + `order-*`, nhớ `lg:order-none`).
 - **Nút**: chính = nền `ink` chữ `paper`; phụ = nền `paper` viền `ink`. Hover đảo màu, `duration-300`. Không bo góc.
-- **Thẻ dịch vụ**: ảnh 3:4, số thứ tự `01–06`, hover phóng ảnh `scale-104` trong 500ms + đổi sang ảnh thứ 2 (nếu có) + nút "Liên hệ để nhận báo giá" chuyển nền đen.
+- **Thẻ dịch vụ** (bảng ghim): nền giấy kẻ dòng mờ; thẻ trắng có ghim đen ở đầu, xếp zigzag trái/phải, nghiêng ±2°. Bề rộng/độ chồng: mobile 88% & sm 60% (thẻ > 50% → **không** chồng dọc, chỉ so le); md 46% chồng `-mt-[30%]`; lg 44% chồng `-mt-72`. Quy tắc: chỉ cho chồng dọc khi hai thẻ không chồng ngang (bề rộng < 50%); nối bằng đường đứt nét cong (`stroke-silver`). Trong thẻ: ảnh dọc 2:3 làm nền cả thẻ (hover đổi sang ảnh thứ 2), lớp phủ `ink` từ dưới lên, tên + mô tả chữ `paper` đè ở đáy ảnh. Hover: thẻ thẳng lại, nhấc lên, bóng đậm hơn.
 - **Placeholder ảnh**: nền `smoke`, khung viền trong, logo "A" mờ 8%, tên dịch vụ serif nghiêng, nhãn "Ảnh đang cập nhật". Kèm `TODO` trong `lib/site-config.ts`.
 - **Lookbook**: album cột so le (mỗi cột bắt đầu ở độ cao khác nhau, chân cột lệch). Desktop 4 cột `[2,3,3,2]` = 9 ảnh, mobile 2 cột = 7 ảnh, khung xen kẽ 3:4 / 4:5; ô cuối cột phải là "Xem thêm" (3:4, viền đứt nét, số "+N"); bấm ảnh hoặc ô "Xem thêm" mở popup xem toàn bộ (Esc, ← →). Dữ liệu ảnh ở `lib/lookbook-photos.ts`.
 - **Điểm mạnh (Giới thiệu)**: bento 2 hàng so le — hàng trên lớn–nhỏ, hàng dưới nhỏ–lớn (3/5 – 2/5), ảnh làm nền thẻ, lớp phủ `ink` từ dưới lên, chữ `paper`. Rê vào thẻ nhỏ thì hai thẻ đổi bề rộng (CSS `.usp-row` trong `globals.css`). Mobile xếp 1 cột.
+- **Hoạ tiết vẽ tay hai mép** (`components/SideOrnaments.tsx`): nét đơn sắc (`silver`, trên nền đen `paper/25`), 3 hoạ tiết mỗi bên theo chủ đề section (Giới thiệu: máy ảnh/sen/ô/bướm…; Lookbook: cuộn phim/polaroid/lông vũ…; Liên hệ: ghim bản đồ/chat/điện thoại…), trôi nhẹ `doodle-float`. Chỉ hiện từ 1400px (lề đủ rộng, không đè nội dung). Không dùng cho Hero và Dịch vụ.
 - **Hoạ tiết chìm**: logo "A" độ mờ 3–5% ở góc nền khối Giới thiệu.
 
 ## 6. Chuyển động
 
-- Hero chạy bằng CSS (`hero-rise`, `hero-unveil`) — không phụ thuộc JS.
-- Các section khác: gắn `data-reveal="up|left|right|blur"` (+ `--reveal-delay`) và `reveal-zoom` cho ảnh; `RevealOnScroll` kích hoạt khi cuộn tới.
+- Hiệu ứng **chạy lại mỗi lần cuộn tới** (cả xuống lẫn lên): `RevealOnScroll` gắn `is-revealed` khi phần tử vào màn hình và gỡ ra khi nó đã ra **hẳn** ngoài khung nhìn (đặt lại tức thì, người xem không thấy).
+- Hero chạy bằng keyframe CSS (`hero-rise`, `hero-unveil`) dưới cờ `.hero-play` (có sẵn từ server nên không phụ thuộc JS); khối có `data-replay="hero-play"` được gỡ/gắn lại cờ để keyframe chạy lại khi cuộn quay về.
+- Các section khác: gắn `data-reveal="up|left|right|blur|scale"` (+ `--reveal-delay`); `RevealOnScroll` kích hoạt khi cuộn tới. Lớp con hiện nối tiếp sau khối cha: `reveal-zoom` (ảnh lắng từ 118%), `reveal-line` / `reveal-line-end` (gạch tự vẽ), `reveal-rise` (chữ nhích lên +350ms), `reveal-pin` (ghim thả xuống +550ms).
+- Quy ước dùng: tiêu đề section `blur`, nhãn/mô tả `up`; thẻ ở cột trái `left`, cột phải `right`; khối lớn đứng yên (bản đồ) `scale`; header `header-drop` khi tải trang.
+- **Không** gắn `data-reveal` cho phần tử sát đáy trang (vd. hàng cuối footer): vùng 10% dưới màn hình không kích hoạt nên có thể không bao giờ hiện.
+- Lớp con `.reveal-*` khai báo `transition` riêng → đừng đặt chúng lên phần tử đang dùng `transition-*` của Tailwind cho hover (sẽ bị đè).
 - Mọi chuyển động phải tắt khi `prefers-reduced-motion`.
 
 ## 7. Ảnh

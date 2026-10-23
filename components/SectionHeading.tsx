@@ -27,12 +27,13 @@ const SectionHeading = ({
                 data-reveal="up"
                 className={`flex items-center gap-3 text-[11px] font-medium uppercase tracking-[0.32em] ${isCenter ? 'justify-center' : ''} ${isDark ? 'text-silver' : 'text-mute'}`}
             >
-                <span className={`h-px w-8 ${isDark ? 'bg-silver' : 'bg-mute'}`} />
+                {/* Hai gạch tự vẽ về phía chữ khi nhãn hiện */}
+                <span className={`reveal-line reveal-line-end h-px w-8 ${isDark ? 'bg-silver' : 'bg-mute'}`} />
                 {eyebrow}
-                {isCenter && <span className={`h-px w-8 ${isDark ? 'bg-silver' : 'bg-mute'}`} />}
+                {isCenter && <span className={`reveal-line h-px w-8 ${isDark ? 'bg-silver' : 'bg-mute'}`} />}
             </p>
             <h2
-                data-reveal="up"
+                data-reveal="blur"
                 style={{ '--reveal-delay': '100ms' } as React.CSSProperties}
                 className={`mt-5 font-display text-[2rem] leading-[1.15] text-balance sm:text-4xl lg:text-[2.875rem] ${isDark ? 'text-paper' : 'text-ink'}`}
             >
